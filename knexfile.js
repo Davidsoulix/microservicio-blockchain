@@ -9,11 +9,11 @@ module.exports = {
   development: {
     client: 'pg',
     connection: {
-      host: process.env.DB_HOST,
-      port: process.env.DB_PORT || 5432,
-      user: process.env.DB_USER,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_NAME,
+      host: 'sw2-parcial2.cr6qwyiua5dq.us-east-2.rds.amazonaws.com',
+      port: 5432,
+      user: 'postgres',
+      password: '79052451Aa',
+      database: 'blockchain_db',
       ssl: {
         rejectUnauthorized: false
       }
