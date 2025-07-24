@@ -13,7 +13,7 @@ router.post('/registrar', async (req, res) => {
     }
 
     //const qrUrl = `http://localhost:3000/notas/lote/${lote}/vista`;
-    const qrUrl = `http://localhost:3000/notas/lote/${encodeURIComponent(lote)}/vista`;
+    const qrUrl = `http://a35ff98ba79d145fdbde8ee6aafee109-1581426069.sa-east-1.elb.amazonaws.com:4000/notas/lote/${encodeURIComponent(lote)}/vista`;
 
     try {
         console.log('Generando QR para:', qrUrl);
@@ -34,8 +34,8 @@ router.post('/registrar', async (req, res) => {
 });
 
 
-// Ruta: GET /notas/lote/:lote/vista
-router.get('/lote/:lote/vista', (req, res) => {
+// Ruta: GET /notas/lote/:lote/vista antiguo
+/*router.get('/lote/:lote/vista', (req, res) => {
     const lote = req.params.lote;
     const history = blockchain.getLoteHistory(lote);
 
@@ -52,6 +52,49 @@ router.get('/lote/:lote/vista', (req, res) => {
     });
     html += '</ul>';
     res.send(html);
+});*/
+
+// Ruta: GET /notas/lote/:lote/vista nuevo
+router.get('/lote/:lote/vista', async (req, res) => {
+    const lote = req.params.lote;
+    try {
+        const history = await blockchain.getLoteHistory(lote);
+
+        if (!Array.isArray(history) || history.length === 0) {
+            return res.send(`<h2>No se encontró información del lote ${lote}</h2><ul>`);
+        }
+
+        let html = `<h1>Historial del Lote: ${lote}</h1><ul>`;
+        
+        history.forEach(b => {
+            const fecha = b.timestamp ? new Date(b.timestamp).toLocaleString() : 'Desconocida';
+            const proveedor = b.data?.id_proveedor ?? 'N/A';
+            const hash = b.hash ?? 'N/A';
+            const qr = b.qrImageBase64 ?? null;
+
+            html += `<li>
+                <b>Fecha:</b> ${fecha}<br>
+                <b>Proveedor (ID):</b> ${proveedor}<br>
+                <b>Hash:</b> ${hash}<br>`;
+
+            if (qr) {
+                html += `<b>QR:</b><br><img src="${qr}" width="150"/><br>`;
+            } else {
+                html += `<b>QR:</b> No disponible<br>`;
+            }
+
+            html += `</li><br>`;
+        });
+
+        html += `</ul>`;
+        res.send(html);
+
+    } catch (error) {
+        console.error('Error al obtener historial del lote:', error);
+        res.status(500).send('Error interno del servidor');
+    }
 });
+
+
 
 module.exports = router;

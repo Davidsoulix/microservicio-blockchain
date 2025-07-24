@@ -3,15 +3,20 @@
 /**
  * @type { Object.<string, import("knex").Knex.Config> }
  */
-module.exports = {
+require('dotenv').config();
 
+module.exports = {
   development: {
     client: 'pg',
     connection: {
-      host: 'localhost',
-      user: 'postgres',
-      password: '2405',
-      database: 'blockchain_db'
+      host: process.env.DB_HOST,
+      port: process.env.DB_PORT || 5432,
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
+      ssl: {
+        rejectUnauthorized: false
+      }
     },
     migrations: {
       directory: './migrations'

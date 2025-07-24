@@ -8,7 +8,7 @@ app.use(express.json());
 
 app.use('/notas', notasRouter);
 
-const PORT = 3000;
+const PORT = 4000;
 app.listen(PORT, () => {
     console.log(`Microservicio Blockchain corriendo en http://localhost:${PORT}`);
 });

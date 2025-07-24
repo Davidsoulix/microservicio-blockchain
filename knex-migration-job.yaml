@@ -1,0 +1,16 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: knex-migration-job
+spec:
+  template:
+    spec:
+      containers:
+      - name: knex
+        image: 399817749369.dkr.ecr.us-east-2.amazonaws.com/microservicio-blockchain:latest
+        command: ["npx", "knex", "migrate:latest"]
+        envFrom:
+          - secretRef:
+              name: blockchain-db-secret
+      restartPolicy: Never
+  backoffLimit: 2

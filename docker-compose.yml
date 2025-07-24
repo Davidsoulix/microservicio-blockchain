@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 2405
+      POSTGRES_DB: blockchain_db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5435:5432"
+
+  blockchain:
+    build: .
+    depends_on:
+      - postgres
+    environment:
+      DB_HOST: postgres
+      DB_USER: postgres
+      DB_PASSWORD: 2405
+      DB_NAME: blockchain_db
+    ports:
+      - "4000:4000"
+    volumes:
+      - .:/app
+    command: ["node", "index.js"]
+
+volumes:
+  pgdata:
