@@ -13,7 +13,7 @@ router.post('/registrar', async (req, res) => {
     }
 
     //const qrUrl = `http://localhost:3000/notas/lote/${lote}/vista`;
-    const qrUrl = `http://a35ff98ba79d145fdbde8ee6aafee109-1581426069.sa-east-1.elb.amazonaws.com:4000/notas/lote/${encodeURIComponent(lote)}/vista`;
+    const qrUrl = `https://sw2-par2-back-production.up.railway.app/notas/lote/${encodeURIComponent(lote)}/vista`;
 
     try {
         console.log('Generando QR para:', qrUrl);
