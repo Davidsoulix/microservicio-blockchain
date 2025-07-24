@@ -13,7 +13,7 @@ router.post('/registrar', async (req, res) => {
     }
 
     //const qrUrl = `http://localhost:3000/notas/lote/${lote}/vista`;
-    const qrUrl = `https://sw2-par2-back-production.up.railway.app/notas/lote/${encodeURIComponent(lote)}/vista`;
+    const qrUrl = `https://microservicio-blockchain-production.up.railway.app/notas/lote/${encodeURIComponent(lote)}/vista`;
 
     try {
         console.log('Generando QR para:', qrUrl);
